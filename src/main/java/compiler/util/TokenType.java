@@ -1,0 +1,25 @@
+package compiler.util;
+
+public enum TokenType {
+    PLUS, MINUS, STAR, SLASH, DOUBLE_STAR, DOUBLE_SLASH, MODULO,
+    
+    EQUALS, LESS_THAN, GREATER_THAN, LESS_EQUALS, GREATER_EQUALS, NOT_EQUALS,
+    
+    AND, OR, NOT,
+    
+    COLON, LPAREN, RPAREN,
+    
+    ASSIGN, EQUALITY,
+
+    IDENTIFIER, INTEGER, FLOAT, STRING,
+    
+    LBRACKET, RBRACKET, COMMA,
+    
+    IF, ELSE, PRINT,
+
+    FOR, IN, WHILE,
+    
+    NEWLINE, INDENT, DEDENT,
+    
+    EOF, UNKNOWN
+}
