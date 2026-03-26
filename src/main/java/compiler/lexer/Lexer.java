@@ -2,7 +2,8 @@ package compiler.lexer;
 
 import compiler.lexer.util.CharReader;
 import compiler.lexer.util.IndentationTracker;
-import compiler.lexer.util.TokenType;
+import compiler.util.TokenType;
+import compiler.util.Token;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,9 +1,10 @@
 package compiler.lexer.util;
 
-import compiler.lexer.Token;
+import compiler.util.Token;
 import java.util.Stack;
 import java.util.List;
 import java.util.ArrayList;
+import compiler.util.TokenType;
 
 public class IndentationTracker {
     private final Stack<Integer> indentStack = new Stack<>();
