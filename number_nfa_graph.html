@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NFA Graph Visualization</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style type="text/css">
+        #mynetwork {
+            width: 100vw;
+            height: 100vh;
+            border: 1px solid lightgray;
+            background-color: #f9f9f9;
+        }
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #info { position: absolute; top: 10px; left: 10px; background: white; padding: 10px; border-radius: 5px; border: 1px solid #ccc; z-index: 10; }
+    </style>
+</head>
+<body>
+<div id="info">
+    <b>Legend:</b><br>
+    <span style="color:#FFCCCB;">&#11044;</span> Start State<br>
+    <span style="color:#ADD8E6;">&#11044;</span> Normal State<br>
+    <span style="color:#90EE90;">&#11044;</span> Accepting State
+</div>
+<div id="mynetwork"></div>
+<script type="text/javascript">
+    var nodes = new vis.DataSet([
+  { id: 2, label: 'S2', shape: 'circle', color: '#FFCCCB' },
+  { id: 3, label: 'S3', shape: 'doublecircle', color: '#90EE90' },
+  { id: 4, label: 'S4', shape: 'circle', color: '#ADD8E6' },
+  { id: 5, label: 'S5', shape: 'doublecircle', color: '#90EE90' },
+]);
+    var edges = new vis.DataSet([
+  { from: 2, to: 3, label: '[0-9]', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 3, to: 3, label: '[0-9]', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 3, to: 4, label: '.', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 4, to: 5, label: '[0-9]', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 5, to: 5, label: '[0-9]', arrows: 'to', font: {align: 'horizontal'} },
+]);
+    var container = document.getElementById('mynetwork');
+    var data = { nodes: nodes, edges: edges };
+    var options = {
+        physics: {
+            stabilization: true,
+            barnesHut: { springLength: 150 }
+        },
+        edges: { smooth: { type: 'dynamic' } }
+    };
+    var network = new vis.Network(container, data, options);
+</script>
+</body>
+</html>
