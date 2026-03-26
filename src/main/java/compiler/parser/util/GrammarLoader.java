@@ -19,14 +19,15 @@ public class GrammarLoader {
 
     /**
      * Orchestrates the loading of the entire grammar from configuration files.
+     * Terminals are automatically loaded from the TokenType enum.
      */
-    public static Grammar load(String terminalsFile, String nonTerminalsFile, String grammarFile) throws IOException {
-        Map<String, Terminal> terminals = loadTerminals(Path.of(terminalsFile));
+    public static Grammar load(String nonTerminalsFile, String grammarFile) throws IOException {
+        Map<String, Terminal> terminals = loadTerminalsFromEnum();
         Map<String, NonTerminal> nonTerminals = loadNonTerminals(Path.of(nonTerminalsFile));
 
         // Assume the first non-terminal in the file is the Start Symbol
         String startSymbolName = Files.readAllLines(Path.of(nonTerminalsFile)).stream()
-                .filter(line -> !line.trim().isEmpty())
+                .filter(line -> !line.trim().isEmpty() && !line.startsWith("#"))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Non-terminals config is empty"));
 
@@ -36,20 +37,13 @@ public class GrammarLoader {
         return grammar;
     }
 
-    private static Map<String, Terminal> loadTerminals(Path path) throws IOException {
+    /**
+     * Automatically maps every TokenType defined in the enum to a Terminal object.
+     */
+    private static Map<String, Terminal> loadTerminalsFromEnum() {
         Map<String, Terminal> map = new HashMap<>();
-        if (!Files.exists(path)) return map;
-
-        List<String> lines = Files.readAllLines(path);
-        for (String line : lines) {
-            line = line.trim();
-            if (line.isEmpty() || line.startsWith("#")) continue;
-            try {
-                TokenType type = TokenType.valueOf(line);
-                map.put(line, new Terminal(type));
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Unknown TokenType in terminals config: " + line);
-            }
+        for (TokenType type : TokenType.values()) {
+            map.put(type.name(), new Terminal(type));
         }
         return map;
     }
@@ -61,7 +55,7 @@ public class GrammarLoader {
         List<String> lines = Files.readAllLines(path);
         for (String line : lines) {
             line = line.trim();
-            if (line.isEmpty() || line.startsWith("#")) continue;
+            if (line.isEmpty() || line.startsWith("//")) continue;
             map.put(line, new NonTerminal(line));
         }
         return map;
@@ -73,41 +67,47 @@ public class GrammarLoader {
         List<String> lines = Files.readAllLines(path);
         for (String line : lines) {
             line = line.trim();
-            if (line.isEmpty() || line.startsWith("#")) continue;
+            if (line.isEmpty() || line.startsWith("//")) continue;
 
             String[] parts = line.split("->");
-            if (parts.length != 2) {
-                if (line.endsWith("->")) {
-                    parts = new String[]{parts[0], ""};
-                } else {
-                    throw new IllegalArgumentException("Invalid production format (must contain '->'): " + line);
-                }
+            if (parts.length < 1 || parts.length > 2) {
+                throw new IllegalArgumentException("Invalid production format (must contain '->'): " + line);
             }
 
             String lhsName = parts[0].trim();
             NonTerminal lhs = nonTerminals.get(lhsName);
             if (lhs == null) throw new IllegalArgumentException("Unknown LHS non-terminal in grammar: " + lhsName);
 
-            String[] rhsNames = parts[1].trim().split("\\s+");
-            List<Symbol> rhs = new ArrayList<>();
+            // Handle empty RHS (epsilon production where nothing follows '->')
+            String rhsString = parts.length == 2 ? parts[1] : "";
 
-            if (rhsNames.length == 1 && (rhsNames[0].isEmpty() || rhsNames[0].equals("ε") || rhsNames[0].equalsIgnoreCase("epsilon"))) {
-                // Epsilon production (empty RHS)
-            } else {
-                for (String symName : rhsNames) {
-                    if (symName.isEmpty()) continue;
+            // Split multiple right-hand sides by '|'
+            String[] rhsOptions = rhsString.split("\\|");
 
-                    if (terminals.containsKey(symName)) {
-                        rhs.add(terminals.get(symName));
-                    } else if (nonTerminals.containsKey(symName)) {
-                        rhs.add(nonTerminals.get(symName));
-                    } else {
-                        throw new IllegalArgumentException("Unknown symbol in production RHS: '" + symName + "' in rule: " + line);
+            for (String rhsOption : rhsOptions) {
+                String[] rhsNames = rhsOption.trim().split("\\s+");
+                List<Symbol> rhs = new ArrayList<>();
+
+                // Check for Epsilon (empty string, "ε", or "epsilon")
+                if (rhsNames.length == 1 && (rhsNames[0].isEmpty() || rhsNames[0].equals("ε") || rhsNames[0].equalsIgnoreCase("epsilon"))) {
+                    // Epsilon production: leave the RHS list empty
+                } else {
+                    for (String symName : rhsNames) {
+                        if (symName.isEmpty()) continue;
+
+                        if (terminals.containsKey(symName)) {
+                            rhs.add(terminals.get(symName));
+                        } else if (nonTerminals.containsKey(symName)) {
+                            rhs.add(nonTerminals.get(symName));
+                        } else {
+                            throw new IllegalArgumentException("Unknown symbol in production RHS: '" + symName + "' in rule: " + line);
+                        }
                     }
                 }
-            }
 
-            grammar.addProduction(new Production(lhs, rhs));
+                // Add each variation as its own discrete production to the Grammar
+                grammar.addProduction(new Production(lhs, rhs));
+            }
         }
     }
 }

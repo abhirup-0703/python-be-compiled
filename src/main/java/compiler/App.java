@@ -13,15 +13,15 @@ import compiler.parser.util.GrammarLoader;
 
 public class App {
     
-    private static final String TERMINALS_FILE = "config/terminals.config";
     private static final String NON_TERMINALS_FILE = "config/nonterminals.config";
     private static final String GRAMMAR_FILE = "config/grammar.config";
-    private static final String SOURCE_FILE = "test_script.spy";
+    private static final String SOURCE_FILE = "input.py"; // Or test_script.spy
 
     public static void main(String[] args) {
         try {
             System.out.println("--- 1. Loading Configuration ---");
-            Grammar grammar = GrammarLoader.load(TERMINALS_FILE, NON_TERMINALS_FILE, GRAMMAR_FILE);
+            // Automatically extracts terminals from TokenType enum!
+            Grammar grammar = GrammarLoader.load(NON_TERMINALS_FILE, GRAMMAR_FILE);
             System.out.println("Grammar loaded with " + grammar.getProductions().size() + " productions.");
 
             System.out.println("\n--- 2. Generating CLR(1) Parsing Table ---");
