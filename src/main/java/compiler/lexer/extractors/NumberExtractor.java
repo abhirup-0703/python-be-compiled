@@ -1,5 +1,7 @@
 package compiler.lexer.extractors;
 
+import java.util.Set;
+
 import compiler.lexer.nfa.NFA;
 import compiler.lexer.nfa.State;
 import compiler.lexer.nfa.Transition;
@@ -10,18 +12,20 @@ import compiler.util.TokenType;
 
 public class NumberExtractor implements TokenExtractor {
     private final NFA nfa;
+    private final State intAcceptState;
+    private final State floatAcceptState;
 
     public NumberExtractor() {
         State numS0 = new State(false);
-        State numS1 = new State(true);  // Accept Int
-        State numS2 = new State(false); // Decimal point seen
-        State numS3 = new State(true);  // Accept Float
+        this.intAcceptState = new State(true);  
+        State numS2 = new State(false);         
+        this.floatAcceptState = new State(true);
         
-        numS0.addTransition(new Transition(Character::isDigit, numS1, "[0-9]"));
-        numS1.addTransition(new Transition(Character::isDigit, numS1, "[0-9]"));
-        numS1.addTransition(new Transition(c -> c == '.', numS2, "."));
-        numS2.addTransition(new Transition(Character::isDigit, numS3, "[0-9]"));
-        numS3.addTransition(new Transition(Character::isDigit, numS3, "[0-9]"));
+        numS0.addTransition(new Transition(Character::isDigit, intAcceptState, "[0-9]"));
+        intAcceptState.addTransition(new Transition(Character::isDigit, intAcceptState, "[0-9]"));
+        intAcceptState.addTransition(new Transition(c -> c == '.', numS2, "."));
+        numS2.addTransition(new Transition(Character::isDigit, floatAcceptState, "[0-9]"));
+        floatAcceptState.addTransition(new Transition(Character::isDigit, floatAcceptState, "[0-9]"));
         
         this.nfa = new NFA(numS0);
         NFAVisualizer.generateHTML(nfa, "number_nfa_graph.html");
@@ -29,7 +33,8 @@ public class NumberExtractor implements TokenExtractor {
 
     @Override
     public boolean canHandle(char c) {
-        return Character.isDigit(c);
+        // PURE NFA ROUTING
+        return nfa.isAlive(String.valueOf(c));
     }
 
     @Override
@@ -47,10 +52,13 @@ public class NumberExtractor implements TokenExtractor {
         }
         
         String text = sb.toString();
-        if (!nfa.matches(text)) {
+        Set<State> finalStates = nfa.getAcceptedStates(text);
+        
+        if (finalStates.isEmpty()) {
             throw new RuntimeException("Lexical Error: Malformed number '" + text + "' at line " + startLine);
         }
         
-        return new Token(text.contains(".") ? TokenType.FLOAT : TokenType.INTEGER, text, startLine, startCol);
+        TokenType type = finalStates.contains(floatAcceptState) ? TokenType.FLOAT : TokenType.INTEGER;
+        return new Token(type, text, startLine, startCol);
     }
 }
