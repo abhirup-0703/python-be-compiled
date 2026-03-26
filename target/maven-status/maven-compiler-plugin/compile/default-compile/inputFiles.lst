@@ -1,9 +1,10 @@
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\App.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\lexer\Lexer.java
+C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\lexer\LexerAPI.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\lexer\nfa\NFA.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\lexer\nfa\State.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\lexer\nfa\Transition.java
-C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\lexer\Token.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\lexer\util\CharReader.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\lexer\util\IndentationTracker.java
-C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\lexer\util\TokenType.java
+C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\util\Token.java
+C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\util\TokenType.java

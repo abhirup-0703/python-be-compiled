@@ -1,4 +1,4 @@
-package compiler.lexer.util;
+package compiler.util;
 
 public enum TokenType {
     PLUS, MINUS, STAR, SLASH, DOUBLE_STAR, DOUBLE_SLASH, MODULO,

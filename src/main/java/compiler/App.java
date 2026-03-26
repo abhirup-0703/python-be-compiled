@@ -1,28 +1,34 @@
 package compiler;
 
-import compiler.lexer.Lexer;
-import compiler.lexer.Token;
+import compiler.lexer.LexerAPI;
+import compiler.util.Token;
+import compiler.util.TokenType;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
-import java.util.List;
 
 public class App {
     public static void main(String[] args) {
         try {
-            // Read the script from the project root
-            String sourceCode = Files.readString(Path.of("test_script.py"));
+            String sourceCode = Files.readString(Path.of("test_script.spy"));
             
             System.out.println("--- Source Code ---");
             System.out.println(sourceCode);
-            System.out.println("\n--- Lexical Analysis ---");
+            System.out.println("\n--- Lexical Analysis via LexerAPI ---");
 
-            Lexer lexer = new Lexer(sourceCode);
-            List<Token> tokens = lexer.tokenize();
+            LexerAPI lexerAPI = new LexerAPI(sourceCode);
 
-            for (Token token : tokens) {
-                System.out.println(token);
+            // Simulating how a parser will consume the tokens
+            Token currentToken = lexerAPI.getNextToken();
+            while (currentToken.type() != TokenType.EOF) {
+                System.out.println(currentToken);
+                currentToken = lexerAPI.getNextToken();
             }
+            
+            // Print the EOF token at the end
+            System.out.println(currentToken);
+
         } catch (IOException e) {
             System.err.println("Could not read test_script.py: " + e.getMessage());
         }

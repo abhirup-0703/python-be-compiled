@@ -1,9 +1,10 @@
 compiler\App.class
-compiler\lexer\Token.class
 compiler\lexer\nfa\Transition.class
 compiler\lexer\util\IndentationTracker.class
 compiler\lexer\util\CharReader.class
-compiler\lexer\util\TokenType.class
+compiler\util\TokenType.class
 compiler\lexer\nfa\State.class
+compiler\util\Token.class
 compiler\lexer\Lexer.class
+compiler\lexer\LexerAPI.class
 compiler\lexer\nfa\NFA.class

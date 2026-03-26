@@ -1,6 +1,4 @@
-package compiler.lexer;
-
-import compiler.lexer.util.TokenType;
+package compiler.util;
 
 public record Token(TokenType type, String lexeme, int line, int column) {
     @Override
