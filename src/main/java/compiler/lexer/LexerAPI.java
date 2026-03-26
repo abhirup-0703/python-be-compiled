@@ -1,66 +1,43 @@
 package compiler.lexer;
 
-import compiler.util.TokenType;
-import compiler.util.Token;
-import compiler.util.SymbolTable;
+import java.io.IOException; // <-- NEW IMPORT
 import java.util.List;
+
+import compiler.util.SymbolTable;
+import compiler.util.Token;
+import compiler.util.TokenType;
 
 public class LexerAPI {
     private final List<Token> tokens;
     private final SymbolTable symbolTable;
     private int position;
 
-    public LexerAPI(String sourceCode) {
-        // The internal lexer does the heavy lifting, completely hidden from the user of LexerAPI
-        Lexer internalLexer = new Lexer(sourceCode);
+    // <-- UPDATED: Now takes filePath and throws IOException
+    public LexerAPI(String filePath) throws IOException {
+        Lexer internalLexer = new Lexer(filePath);
         
-        // Tokenize the file and immediately grab the resulting data structures
         this.tokens = internalLexer.tokenize();
         this.symbolTable = internalLexer.getSymbolTable();
         this.position = 0;
     }
 
-    /**
-     * Retrieves the populated Symbol Table containing all unique identifiers.
-     */
-    public SymbolTable getSymbolTable() {
-        return symbolTable;
-    }
-
-    /**
-     * Consumes and returns the current token, advancing the internal cursor.
-     */
+    public SymbolTable getSymbolTable() { return symbolTable; }
+    
     public Token getNextToken() {
-        if (position < tokens.size()) {
-            return tokens.get(position++);
-        }
-        // Safely return the EOF token if the parser asks for too many tokens
+        if (position < tokens.size()) return tokens.get(position++);
         return tokens.get(tokens.size() - 1);
     }
 
-    /**
-     * Looks at the current token without consuming it. Crucial for parser lookahead.
-     */
     public Token peekToken() {
-        if (position < tokens.size()) {
-            return tokens.get(position);
-        }
+        if (position < tokens.size()) return tokens.get(position);
         return tokens.get(tokens.size() - 1);
     }
 
-    /**
-     * Looks ahead 'n' steps without consuming. (e.g., peekAhead(1) is the next token).
-     */
     public Token peekAhead(int offset) {
-        if (position + offset < tokens.size()) {
-            return tokens.get(position + offset);
-        }
+        if (position + offset < tokens.size()) return tokens.get(position + offset);
         return tokens.get(tokens.size() - 1);
     }
 
-    /**
-     * Checks if there are more functional tokens left (ignoring the final EOF).
-     */
     public boolean hasNext() {
         return position < tokens.size() && tokens.get(position).type() != TokenType.EOF;
     }

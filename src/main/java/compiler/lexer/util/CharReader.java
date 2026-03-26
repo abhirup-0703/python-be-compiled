@@ -1,28 +1,53 @@
 package compiler.lexer.util;
 
-public class CharReader {
-    private final String source;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class CharReader implements AutoCloseable {
+    private final BufferedReader reader;
+    private int currentChar = -1;
+    private int nextChar = -1;
     private int position = 0;
     private int line = 1;
     private int column = 1;
 
-    public CharReader(String source) {
-        this.source = source;
+    public CharReader(String filePath) throws IOException {
+        this.reader = new BufferedReader(new FileReader(filePath));
+        
+        // Initialize the 2-character sliding window for lookahead
+        this.currentChar = reader.read();
+        if (this.currentChar != -1) {
+            this.nextChar = reader.read();
+        }
     }
 
     public char peek() {
         if (isAtEnd()) return '\0';
-        return source.charAt(position);
+        return (char) currentChar;
     }
 
     public char peekNext() {
-        if (position + 1 >= source.length()) return '\0';
-        return source.charAt(position + 1);
+        if (nextChar == -1) return '\0';
+        return (char) nextChar;
     }
 
     public char advance() {
         if (isAtEnd()) return '\0';
-        char c = source.charAt(position++);
+        char c = (char) currentChar;
+        
+        // Advance the sliding window
+        currentChar = nextChar;
+        try {
+            if (currentChar != -1) {
+                nextChar = reader.read();
+            }
+        } catch (IOException e) {
+            nextChar = -1; 
+            throw new RuntimeException("Error reading file during lexical analysis", e);
+        }
+
+        position++;
         if (c == '\n') {
             line++;
             column = 1;
@@ -33,10 +58,15 @@ public class CharReader {
     }
 
     public boolean isAtEnd() {
-        return position >= source.length();
+        return currentChar == -1;
     }
 
     public int getLine() { return line; }
     public int getColumn() { return column; }
     public int getPosition() { return position; }
+
+    @Override
+    public void close() throws IOException {
+        reader.close();
+    }
 }

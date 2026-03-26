@@ -33,6 +33,7 @@ C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-com
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\parser\util\expression\NumberLiteral.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\parser\util\expression\StringLiteral.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\parser\util\GrammarLoader.java
+C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\parser\util\ParsingTableFormatter.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\parser\util\statement\Assignment.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\parser\util\statement\ForStatement.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\parser\util\statement\IfStatement.java
