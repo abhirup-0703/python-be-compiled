@@ -1,8 +1,6 @@
 package compiler;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import compiler.lexer.LexerAPI;
 import compiler.parser.CLRParser;
@@ -15,7 +13,7 @@ import compiler.parser.util.ParsingTableFormatter;
 public class Main {
     
     private static final String GRAMMAR_FILE = "config/grammar.config";
-    private static final String TABLE_OUTPUT_FILE = "parsing_table.txt";
+    private static final String TABLE_OUTPUT_FILE = "parsing_table.html";
 
     public static void main(String[] args) {
         try {
@@ -32,31 +30,27 @@ public class Main {
             ParsingTableFormatter.writeTableToFile(table, TABLE_OUTPUT_FILE);
             System.out.println("Parsing Table generated and saved to: " + TABLE_OUTPUT_FILE);
 
-            // --- 2. Read Source Code ---
-            System.out.println("\n--- 3. Reading Source Code ---");
-            String sourceCode = Files.readString(Path.of("test_script.spy"));
-            System.out.println(sourceCode);
-
-            // --- 3. Lexical Analysis ---
-            System.out.println("\n--- 4. Lexical Analysis via LexerAPI ---");
-            LexerAPI lexerAPI = new LexerAPI(sourceCode);
+            // --- 3. Lexical Analysis (File path directly to Lexer) ---
+            String filePath = "test_script.spy";
+            System.out.println("\n--- 3. Initializing LexerAPI with file: " + filePath + " ---");
+            LexerAPI lexerAPI = new LexerAPI(filePath);
 
             System.out.println("\n--- Generated Symbol Table ---");
+
             lexerAPI.getSymbolTable().printTable();
 
             // --- 4. Syntax Analysis (Parsing) ---
-            System.out.println("\n--- 5. Syntax Analysis (Parsing) ---");
+            System.out.println("\n--- 4. Syntax Analysis (Parsing) ---");
             CLRParser parser = new CLRParser(table);
             
-            // The parser now consumes the tokens from the lexer
+            // The parser consumes the tokens from the lexer
             boolean success = parser.parse(lexerAPI);
             if (success) {
                 System.out.println("Compilation successful: The source code is syntactically valid.");
             }
 
         } catch (IOException e) {
-            System.err.println("File IO Error: Make sure " + GRAMMAR_FILE + " and test_script.spy exist.");
-            System.err.println(e.getMessage());
+            System.err.println("File IO Error: " + e.getMessage());
         } catch (IllegalArgumentException e) {
             System.err.println("Configuration Error: " + e.getMessage());
         } catch (RuntimeException e) {

@@ -1,10 +1,10 @@
 package compiler;
 
+import java.io.IOException;
+
 import compiler.lexer.LexerAPI;
 import compiler.util.Token;
 import compiler.util.TokenType;
-
-import java.io.IOException;
 
 public class App {
     public static void main(String[] args) {
