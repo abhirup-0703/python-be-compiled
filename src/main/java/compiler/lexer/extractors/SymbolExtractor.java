@@ -21,15 +21,12 @@ public class SymbolExtractor implements TokenExtractor {
         State s0 = new State(false);
         State accept = new State(true);
 
-        // Single character boundaries
         s0.addTransition(new Transition(c -> "+-()[]:,".indexOf(c) != -1, accept, "+-()[]:,"));
 
-        // Multi-character logic (e.g. =, ==, !, !=, <, <=, >, >=)
         State eqBase = new State(true);
         s0.addTransition(new Transition(c -> "=<!>".indexOf(c) != -1, eqBase, "=< >!"));
         eqBase.addTransition(new Transition(c -> c == '=', accept, "="));
 
-        // Math multi-characters (*, **, /, //)
         State starBase = new State(true);
         s0.addTransition(new Transition(c -> c == '*', starBase, "*"));
         starBase.addTransition(new Transition(c -> c == '*', accept, "*"));
@@ -57,7 +54,7 @@ public class SymbolExtractor implements TokenExtractor {
 
     @Override
     public boolean canHandle(char c) {
-        return true; // Catch-all for remaining symbols
+        return nfa.isAlive(String.valueOf(c)); 
     }
 
     @Override
@@ -76,8 +73,7 @@ public class SymbolExtractor implements TokenExtractor {
         
         String text = sb.toString();
         if (!nfa.matches(text) || !symbolMap.containsKey(text)) {
-            // Failsafe for complete junk characters
-            return new Token(TokenType.UNKNOWN, String.valueOf(reader.advance()), startLine, startCol);
+            return new Token(TokenType.UNKNOWN, text, startLine, startCol);
         }
         
         return new Token(symbolMap.get(text), text, startLine, startCol);

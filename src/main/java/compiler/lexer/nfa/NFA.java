@@ -71,6 +71,33 @@ public class NFA {
             currentStates = getEpsilonClosure(nextStates);
             if (currentStates.isEmpty()) return false; // The NFA died
         }
-        return true; // Still alive!
+        return true;
+    }
+
+    /**
+     * Runs the input string through the NFA and returns the set of 
+     * accepting states the machine landed on.
+     */
+    public Set<State> getAcceptedStates(String input) {
+        Set<State> currentStates = getEpsilonClosure(Set.of(startState));
+
+        for (char c : input.toCharArray()) {
+            Set<State> nextStates = new HashSet<>();
+            for (State state : currentStates) {
+                for (Transition t : state.getTransitions()) {
+                    if (t.matches(c) && t.condition != Transition.EPSILON) {
+                        nextStates.add(t.getTargetState());
+                    }
+                }
+            }
+            currentStates = getEpsilonClosure(nextStates);
+            if (currentStates.isEmpty()) return new HashSet<>();
+        }
+
+        Set<State> accepted = new HashSet<>();
+        for (State state : currentStates) {
+            if (state.isAccepting()) accepted.add(state);
+        }
+        return accepted;
     }
 }

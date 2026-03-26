@@ -26,7 +26,8 @@ public class StringExtractor implements TokenExtractor {
 
     @Override
     public boolean canHandle(char c) {
-        return c == '"';
+        // PURE NFA ROUTING
+        return nfa.isAlive(String.valueOf(c));
     }
 
     @Override
