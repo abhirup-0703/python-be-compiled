@@ -11,7 +11,7 @@ public enum TokenType {
     
     ASSIGN, EQUALITY,
 
-    IDENTIFIER, NUMBER, FLOAT, STRING,
+    IDENTIFIER, INTEGER, FLOAT, STRING,
     
     LBRACKET, RBRACKET, COMMA,
     

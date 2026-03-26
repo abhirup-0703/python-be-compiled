@@ -83,7 +83,7 @@ class Lexer {
             advance();
         }
         
-        TokenType type = hasDecimal ? TokenType.FLOAT : TokenType.NUMBER;
+        TokenType type = hasDecimal ? TokenType.FLOAT : TokenType.INTEGER;
         return new Token(type, result.toString(), line, startColumn);
     }
 
