@@ -51,4 +51,26 @@ public class NFA {
         }
         return closure;
     }
+
+    /**
+     * Checks if the given input string is a valid prefix.
+     * Returns true if the NFA has not hit a dead end.
+     */
+    public boolean isAlive(String input) {
+        Set<State> currentStates = getEpsilonClosure(Set.of(startState));
+
+        for (char c : input.toCharArray()) {
+            Set<State> nextStates = new HashSet<>();
+            for (State state : currentStates) {
+                for (Transition t : state.getTransitions()) {
+                    if (t.matches(c) && t.condition != Transition.EPSILON) {
+                        nextStates.add(t.getTargetState());
+                    }
+                }
+            }
+            currentStates = getEpsilonClosure(nextStates);
+            if (currentStates.isEmpty()) return false; // The NFA died
+        }
+        return true; // Still alive!
+    }
 }

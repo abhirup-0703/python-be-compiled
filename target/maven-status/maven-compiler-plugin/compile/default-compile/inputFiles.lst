@@ -39,5 +39,6 @@ C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-com
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\parser\util\statement\Statement.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\parser\util\statement\WhileStatement.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\test\TestVisualizer.java
+C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\util\SymbolTable.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\util\Token.java
 C:\Users\User\Desktop\code_playground\toy_projects\python-compiler\python-be-compiled\src\main\java\compiler\util\TokenType.java

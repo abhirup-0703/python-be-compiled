@@ -2,17 +2,29 @@ package compiler.lexer;
 
 import compiler.util.TokenType;
 import compiler.util.Token;
+import compiler.util.SymbolTable;
 import java.util.List;
 
 public class LexerAPI {
     private final List<Token> tokens;
+    private final SymbolTable symbolTable;
     private int position;
 
     public LexerAPI(String sourceCode) {
         // The internal lexer does the heavy lifting, completely hidden from the user of LexerAPI
         Lexer internalLexer = new Lexer(sourceCode);
+        
+        // Tokenize the file and immediately grab the resulting data structures
         this.tokens = internalLexer.tokenize();
+        this.symbolTable = internalLexer.getSymbolTable();
         this.position = 0;
+    }
+
+    /**
+     * Retrieves the populated Symbol Table containing all unique identifiers.
+     */
+    public SymbolTable getSymbolTable() {
+        return symbolTable;
     }
 
     /**

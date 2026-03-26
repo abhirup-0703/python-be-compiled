@@ -24,14 +24,14 @@
 <div id="mynetwork"></div>
 <script type="text/javascript">
     var nodes = new vis.DataSet([
-  { id: 6, label: 'S6', shape: 'circle', color: '#FFCCCB' },
-  { id: 7, label: 'S7', shape: 'circle', color: '#ADD8E6' },
-  { id: 8, label: 'S8', shape: 'doublecircle', color: '#90EE90' },
+  { id: 0, label: 'S0', shape: 'circle', color: '#FFCCCB' },
+  { id: 1, label: 'S1', shape: 'circle', color: '#ADD8E6' },
+  { id: 2, label: 'S2', shape: 'doublecircle', color: '#90EE90' },
 ]);
     var edges = new vis.DataSet([
-  { from: 6, to: 7, label: '\"', arrows: 'to', font: {align: 'horizontal'} },
-  { from: 7, to: 7, label: '[^\"]', arrows: 'to', font: {align: 'horizontal'} },
-  { from: 7, to: 8, label: '\"', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 0, to: 1, label: '\"', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 1, to: 1, label: '[^\"]', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 1, to: 2, label: '\"', arrows: 'to', font: {align: 'horizontal'} },
 ]);
     var container = document.getElementById('mynetwork');
     var data = { nodes: nodes, edges: edges };

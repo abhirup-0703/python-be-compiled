@@ -20,6 +20,7 @@ compiler\lexer\nfa\LexerNFAVisualizer.class
 compiler\parser\util\statement\Statement.class
 compiler\parser\analysis\GrammarAnalyzer.class
 compiler\parser\grammar\NonTerminal.class
+compiler\util\SymbolTable.class
 compiler\parser\CLRParser$1.class
 compiler\lexer\extractors\SymbolExtractor.class
 compiler\lexer\extractors\StringExtractor.class
@@ -29,6 +30,7 @@ compiler\parser\util\expression\StringLiteral.class
 compiler\util\Token.class
 compiler\lexer\LexerAPI.class
 compiler\App.class
+compiler\util\SymbolTable$SymbolRecord.class
 compiler\parser\table\Action.class
 compiler\parser\grammar\Symbol.class
 compiler\parser\util\expression\BinaryOp.class

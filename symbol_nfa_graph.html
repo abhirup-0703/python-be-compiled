@@ -24,12 +24,20 @@
 <div id="mynetwork"></div>
 <script type="text/javascript">
     var nodes = new vis.DataSet([
-  { id: 3, label: 'S3', shape: 'circle', color: '#FFCCCB' },
-  { id: 4, label: 'S4', shape: 'doublecircle', color: '#90EE90' },
+  { id: 9, label: 'S9', shape: 'circle', color: '#FFCCCB' },
+  { id: 10, label: 'S10', shape: 'doublecircle', color: '#90EE90' },
+  { id: 11, label: 'S11', shape: 'doublecircle', color: '#90EE90' },
+  { id: 12, label: 'S12', shape: 'doublecircle', color: '#90EE90' },
+  { id: 13, label: 'S13', shape: 'doublecircle', color: '#90EE90' },
 ]);
     var edges = new vis.DataSet([
-  { from: 3, to: 4, label: '[a-zA-Z_]', arrows: 'to', font: {align: 'horizontal'} },
-  { from: 4, to: 4, label: '[a-zA-Z0-9_]', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 9, to: 10, label: '+-()[]:,', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 9, to: 11, label: '=< >!', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 9, to: 12, label: '*', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 9, to: 13, label: '/', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 11, to: 10, label: '=', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 12, to: 10, label: '*', arrows: 'to', font: {align: 'horizontal'} },
+  { from: 13, to: 10, label: '/', arrows: 'to', font: {align: 'horizontal'} },
 ]);
     var container = document.getElementById('mynetwork');
     var data = { nodes: nodes, edges: edges };
