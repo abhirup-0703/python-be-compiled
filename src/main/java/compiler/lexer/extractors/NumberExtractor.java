@@ -33,7 +33,6 @@ public class NumberExtractor implements TokenExtractor {
 
     @Override
     public boolean canHandle(char c) {
-        // PURE NFA ROUTING
         return nfa.isAlive(String.valueOf(c));
     }
 
